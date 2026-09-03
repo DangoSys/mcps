@@ -1,2 +1,3 @@
-# mcps
-Mcps help you develop with [buckyball
+# MCPs
+
+MCPs help you develop with buckyball
