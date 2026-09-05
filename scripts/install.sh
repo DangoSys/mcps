@@ -11,7 +11,7 @@ add_mcp=(npx --yes add-mcp@2.3.0)
 register() {
   local name="$1"
   local cmd="$2"
-  "${add_mcp[@]}" --name "$name" -a cursor -a codex -y "$cmd"
+  "${add_mcp[@]}" --name "$name" -a cursor -a codex -a claude-code -y "$cmd"
 }
 
 found=0
