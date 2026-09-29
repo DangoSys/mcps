@@ -11,7 +11,8 @@ add_mcp=(npx --yes add-mcp@2.3.0)
 register() {
   local name="$1"
   local cmd="$2"
-  "${add_mcp[@]}" --name "$name" -a cursor -a codex -a claude-code -y "$cmd"
+  # The progress UI reads stdin even with -y; setup may inherit an unreadable fd.
+  "${add_mcp[@]}" --name "$name" -a cursor -a codex -a claude-code -y "$cmd" < /dev/null
 }
 
 found=0
