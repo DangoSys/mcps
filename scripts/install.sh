@@ -6,13 +6,14 @@ mcps="$(cd "$here/.." && pwd)"
 root="$(cd "$here/../../.." && pwd)"
 cd "$root"
 
-add_mcp=(npx --yes add-mcp@2.3.0)
+add_mcp=(npx --loglevel=error --yes add-mcp@2.3.0)
 
 register() {
   local name="$1"
   local cmd="$2"
+  shift 2
   # The progress UI reads stdin even with -y; setup may inherit an unreadable fd.
-  "${add_mcp[@]}" --name "$name" -a cursor -a codex -a claude-code -y "$cmd" < /dev/null
+  "${add_mcp[@]}" --name "$name" -a cursor -a codex -a claude-code -y "$cmd" "$@" < /dev/null
 }
 
 found=0
@@ -38,7 +39,11 @@ for d in "$mcps"/*/; do
     echo "ERROR: ${cmdfile} must contain exactly one command line" >&2
     exit 1
   fi
-  register "$name" "${lines[0]}"
+  args=()
+  if [[ -f "${d}args.sh" ]]; then
+    source "${d}args.sh"
+  fi
+  register "$name" "${lines[0]}" "${args[@]}"
   found=1
 done
 
